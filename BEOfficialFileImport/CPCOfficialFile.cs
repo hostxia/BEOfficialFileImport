@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 
 namespace BEOfficialFileImport
 {
@@ -30,7 +31,11 @@ namespace BEOfficialFileImport
             BizOfficialID = 0;
             BizOfficialName = "";
             CaseStatusID = 0;
+
+            CPCOfficialFileConfig = CPCOfficialFileConfigCollection.Instance.FirstOrDefault(c => c.Code == FileCode);
         }
+
+        public CPCOfficialFileConfig CPCOfficialFileConfig { get; set; }
 
         /// <summary>
         ///     彼速来文类型

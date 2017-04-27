@@ -33,11 +33,14 @@
             this.xgcOfficialFile = new DevExpress.XtraGrid.GridControl();
             this.xgvOfficialFile = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -45,13 +48,13 @@
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.xbbiRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.xbbiImport = new DevExpress.XtraBars.BarButtonItem();
+            this.xbbiDelete = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xgcOfficialFile)).BeginInit();
@@ -93,13 +96,17 @@
             this.gridColumn3,
             this.gridColumn4,
             this.gridColumn8,
+            this.gridColumn11,
+            this.gridColumn12,
             this.gridColumn6,
             this.gridColumn9,
             this.gridColumn7});
             this.xgvOfficialFile.GridControl = this.xgcOfficialFile;
             this.xgvOfficialFile.Name = "xgvOfficialFile";
             this.xgvOfficialFile.OptionsBehavior.Editable = false;
+            this.xgvOfficialFile.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
             this.xgvOfficialFile.OptionsSelection.MultiSelect = true;
+            this.xgvOfficialFile.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect;
             this.xgvOfficialFile.OptionsView.ColumnAutoWidth = false;
             this.xgvOfficialFile.OptionsView.ShowAutoFilterRow = true;
             this.xgvOfficialFile.OptionsView.ShowFooter = true;
@@ -115,6 +122,14 @@
             new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "Note", "{0}")});
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 0;
+            // 
+            // gridColumn10
+            // 
+            this.gridColumn10.Caption = "发文序列号";
+            this.gridColumn10.FieldName = "SendSerial";
+            this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.Visible = true;
+            this.gridColumn10.VisibleIndex = 1;
             // 
             // gridColumn5
             // 
@@ -156,13 +171,29 @@
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 6;
             // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "处理人";
+            this.gridColumn11.FieldName = "CPCOfficialFileConfig.Dealer";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 7;
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "添加时限";
+            this.gridColumn12.FieldName = "CPCOfficialFileConfig.CreateDeadline";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 8;
+            // 
             // gridColumn6
             // 
             this.gridColumn6.Caption = "下载日期";
             this.gridColumn6.FieldName = "DownloadDate";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 7;
+            this.gridColumn6.VisibleIndex = 9;
             // 
             // gridColumn9
             // 
@@ -170,7 +201,7 @@
             this.gridColumn9.FieldName = "FilePath";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 8;
+            this.gridColumn9.VisibleIndex = 10;
             this.gridColumn9.Width = 94;
             // 
             // gridColumn7
@@ -179,7 +210,7 @@
             this.gridColumn7.FieldName = "BizFilePath";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 9;
+            this.gridColumn7.VisibleIndex = 11;
             this.gridColumn7.Width = 96;
             // 
             // barManager1
@@ -193,9 +224,10 @@
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.xbbiRefresh,
-            this.xbbiImport});
+            this.xbbiImport,
+            this.xbbiDelete});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 2;
+            this.barManager1.MaxItemId = 3;
             // 
             // bar2
             // 
@@ -205,7 +237,8 @@
             this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.xbbiRefresh),
-            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiImport)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiImport),
+            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiDelete)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DisableClose = true;
             this.bar2.OptionsBar.DisableCustomization = true;
@@ -228,6 +261,13 @@
             this.xbbiImport.Id = 1;
             this.xbbiImport.Name = "xbbiImport";
             this.xbbiImport.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.xbbiImport_ItemClick);
+            // 
+            // xbbiDelete
+            // 
+            this.xbbiDelete.Caption = "删除";
+            this.xbbiDelete.Id = 2;
+            this.xbbiDelete.Name = "xbbiDelete";
+            this.xbbiDelete.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.xbbiDelete_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -281,14 +321,6 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // gridColumn10
-            // 
-            this.gridColumn10.Caption = "发文序列号";
-            this.gridColumn10.FieldName = "SendSerial";
-            this.gridColumn10.Name = "gridColumn10";
-            this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 1;
-            // 
             // XFrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -338,6 +370,9 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn8;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
+        private DevExpress.XtraBars.BarButtonItem xbbiDelete;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
     }
 }
 
