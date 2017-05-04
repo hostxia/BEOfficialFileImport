@@ -2,7 +2,6 @@
 
 namespace BEOfficialFileImport
 {
-
     public enum DeadlineFiledType
     {
         OA,
@@ -157,7 +156,7 @@ namespace BEOfficialFileImport
             Add(new CPCOfficialFileConfig("210301", "审查意见通知书", "oa", "XN"));
             Add(new CPCOfficialFileConfig("210302", "补正通知书", "corr", DeadlineFiledType.Deadline, "correction", string.Empty, 15, 2));
             Add(new CPCOfficialFileConfig("210303", "生物材料样品视为未保藏通知书", "deem-no-bio", DeadlineFiledType.Deadline, "deemwithdraw", "生物材料", 15, 2, "DXD"));
-            Add(new CPCOfficialFileConfig("210304", "发明专利申请初步审查合格通知书", "pe-pass", DeadlineFiledType.Case, "PRE_EXAM_PASSED", string.Empty, 0, 0, "WZM"));
+            Add(new CPCOfficialFileConfig("210304", "发明专利申请初步审查合格通知书", "pe-pass", DeadlineFiledType.Case, "PRE_EXAM_PASSED", string.Empty, 0, 0,"ON"));
             Add(new CPCOfficialFileConfig("210305", "发明专利申请公布通知书", "pub", "DXD"));
             Add(new CPCOfficialFileConfig("210306", "发明专利申请实质审查请求期限届满前通知书", "timedue", "DXD"));
             Add(new CPCOfficialFileConfig("210307", "发明专利申请进入实质审查阶段通知书", "enter-se", "DXD"));
@@ -205,7 +204,7 @@ namespace BEOfficialFileImport
             Add(new CPCOfficialFileConfig("250301", "国际申请不能进入中国国家阶段通知书", "memo", "DXD"));
             Add(new CPCOfficialFileConfig("250302", "国际申请进入中国国家阶段通知书", "enter into national phase", "DXD"));
             Add(new CPCOfficialFileConfig("250303", "修改文件缺陷通知书", "memo", "DXD"));
-            Add(new CPCOfficialFileConfig("250304", "国际申请进入中国国家阶段初步审查合格通知书", "pe-pass", DeadlineFiledType.Case, "PRE_EXAM_PASSED", string.Empty, 0, 0, "WZM"));
+            Add(new CPCOfficialFileConfig("250304", "国际申请进入中国国家阶段初步审查合格通知书", "pe-pass", DeadlineFiledType.Case, "PRE_EXAM_PASSED", string.Empty, 0, 0,"ON"));
             Add(new CPCOfficialFileConfig("250306", "未收到专利性国际初步报告通知书", "memo", "DXD"));
             Add(new CPCOfficialFileConfig("250309", "修改不予考虑通知书", "memo", "DXD"));
             Add(new CPCOfficialFileConfig("250311", "递交邮寄文件回执", "memo"));

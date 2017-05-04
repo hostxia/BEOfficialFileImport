@@ -55,6 +55,7 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.xbbiMessage = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xgcOfficialFile)).BeginInit();
@@ -103,7 +104,6 @@
             this.gridColumn7});
             this.xgvOfficialFile.GridControl = this.xgcOfficialFile;
             this.xgvOfficialFile.Name = "xgvOfficialFile";
-            this.xgvOfficialFile.OptionsBehavior.Editable = false;
             this.xgvOfficialFile.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
             this.xgvOfficialFile.OptionsSelection.MultiSelect = true;
             this.xgvOfficialFile.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect;
@@ -118,6 +118,7 @@
             this.gridColumn1.Caption = "信息";
             this.gridColumn1.FieldName = "Note";
             this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
             new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "Note", "{0}")});
             this.gridColumn1.Visible = true;
@@ -128,6 +129,7 @@
             this.gridColumn10.Caption = "发文序列号";
             this.gridColumn10.FieldName = "SendSerial";
             this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 1;
             // 
@@ -136,6 +138,7 @@
             this.gridColumn5.Caption = "申请号";
             this.gridColumn5.FieldName = "AppNo";
             this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 2;
             // 
@@ -144,6 +147,7 @@
             this.gridColumn2.Caption = "我方卷号";
             this.gridColumn2.FieldName = "CaseSerial";
             this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 3;
             // 
@@ -152,6 +156,7 @@
             this.gridColumn3.Caption = "通知书代码";
             this.gridColumn3.FieldName = "FileCode";
             this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 4;
             // 
@@ -160,6 +165,7 @@
             this.gridColumn4.Caption = "通知书名称";
             this.gridColumn4.FieldName = "FileName";
             this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 5;
             // 
@@ -168,6 +174,7 @@
             this.gridColumn8.Caption = "官方发文日";
             this.gridColumn8.FieldName = "SendDate";
             this.gridColumn8.Name = "gridColumn8";
+            this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
             this.gridColumn8.VisibleIndex = 6;
             // 
@@ -184,6 +191,7 @@
             this.gridColumn12.Caption = "添加时限";
             this.gridColumn12.FieldName = "CPCOfficialFileConfig.CreateDeadline";
             this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 8;
             // 
@@ -192,6 +200,7 @@
             this.gridColumn6.Caption = "下载日期";
             this.gridColumn6.FieldName = "DownloadDate";
             this.gridColumn6.Name = "gridColumn6";
+            this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 9;
             // 
@@ -200,6 +209,7 @@
             this.gridColumn9.Caption = "下载文件路径";
             this.gridColumn9.FieldName = "FilePath";
             this.gridColumn9.Name = "gridColumn9";
+            this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
             this.gridColumn9.VisibleIndex = 10;
             this.gridColumn9.Width = 94;
@@ -209,6 +219,7 @@
             this.gridColumn7.Caption = "PDF文件路径";
             this.gridColumn7.FieldName = "BizFilePath";
             this.gridColumn7.Name = "gridColumn7";
+            this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 11;
             this.gridColumn7.Width = 96;
@@ -225,9 +236,10 @@
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.xbbiRefresh,
             this.xbbiImport,
-            this.xbbiDelete});
+            this.xbbiDelete,
+            this.xbbiMessage});
             this.barManager1.MainMenu = this.bar2;
-            this.barManager1.MaxItemId = 3;
+            this.barManager1.MaxItemId = 4;
             // 
             // bar2
             // 
@@ -238,7 +250,8 @@
             this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.xbbiRefresh),
             new DevExpress.XtraBars.LinkPersistInfo(this.xbbiImport),
-            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiDelete)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiDelete),
+            new DevExpress.XtraBars.LinkPersistInfo(this.xbbiMessage)});
             this.bar2.OptionsBar.AllowQuickCustomization = false;
             this.bar2.OptionsBar.DisableClose = true;
             this.bar2.OptionsBar.DisableCustomization = true;
@@ -321,6 +334,13 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
+            // xbbiMessage
+            // 
+            this.xbbiMessage.Caption = "重新发送";
+            this.xbbiMessage.Id = 3;
+            this.xbbiMessage.Name = "xbbiMessage";
+            this.xbbiMessage.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.xbbiMessage_ItemClick);
+            // 
             // XFrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -373,6 +393,7 @@
         private DevExpress.XtraBars.BarButtonItem xbbiDelete;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraBars.BarButtonItem xbbiMessage;
     }
 }
 

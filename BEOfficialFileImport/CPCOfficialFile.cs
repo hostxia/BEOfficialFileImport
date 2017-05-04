@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Data;
 using System.Linq;
 
@@ -217,5 +218,11 @@ namespace BEOfficialFileImport
                 date = DateTime.MinValue;
             return date;
         }
+
+        public string ClientNo { get; set; }
+
+        public string ClientName { get; set; }
+
+        public Hashtable Applicants { get; set; }
     }
 }
