@@ -45,11 +45,11 @@ namespace BEOfficialFileImport
             var dt = new DataTable();
             if (!string.IsNullOrWhiteSpace(sAppNo))
             {
-                dt = DbHelperOra.Query($"select OURNO,APPLICATION_NO,CLIENT_NUMBER,DOCSTATE,CLIENT,CLIENT_NAME,APPL_CODE1,APPLICANT1,APPLICANT_CH1,APPL_CODE2,APPLICANT2,APPLICANT_CH2,APPL_CODE3,APPLICANT3,APPLICANT_CH3,APPL_CODE4,APPLICANT4,APPLICANT_CH4,APPL_CODE5,APPLICANT5,APPLICANT_CH5 from PATENTCASE where APPLICATION_NO = '{sAppNo}'").Tables[0];
+                dt = DbHelperOra.Query($"select OURNO,APPLICATION_NO,CLIENT_NUMBER,DOCSTATE,CLIENT,CLIENT_NAME,APPL_CODE1,APPLICANT1,APPLICANT_CH1,APPL_CODE2,APPLICANT2,APPLICANT_CH2,APPL_CODE3,APPLICANT3,APPLICANT_CH3,APPL_CODE4,APPLICANT4,APPLICANT_CH4,APPL_CODE5,APPLICANT5,APPLICANT_CH5,WITHDREW,DIV_FILINGDATE from PATENTCASE where APPLICATION_NO = '{sAppNo}'").Tables[0];
             }
             if (!string.IsNullOrWhiteSpace(sOurNo) && dt.Rows.Count == 0)
             {
-                return DbHelperOra.Query($"select OURNO,APPLICATION_NO,CLIENT_NUMBER,DOCSTATE,CLIENT,CLIENT_NAME,APPL_CODE1,APPLICANT1,APPLICANT_CH1,APPL_CODE2,APPLICANT2,APPLICANT_CH2,APPL_CODE3,APPLICANT3,APPLICANT_CH3,APPL_CODE4,APPLICANT4,APPLICANT_CH4,APPL_CODE5,APPLICANT5,APPLICANT_CH5 from PATENTCASE where OURNO like '{sOurNo}%'").Tables[0];
+                return DbHelperOra.Query($"select OURNO,APPLICATION_NO,CLIENT_NUMBER,DOCSTATE,CLIENT,CLIENT_NAME,APPL_CODE1,APPLICANT1,APPLICANT_CH1,APPL_CODE2,APPLICANT2,APPLICANT_CH2,APPL_CODE3,APPLICANT3,APPLICANT_CH3,APPL_CODE4,APPLICANT4,APPLICANT_CH4,APPL_CODE5,APPLICANT5,APPLICANT_CH5,WITHDREW,DIV_FILINGDATE from PATENTCASE where OURNO like '{sOurNo}%'").Tables[0];
             }
             return dt;
         }
@@ -95,7 +95,9 @@ namespace BEOfficialFileImport
                     f.CaseSerial = dtCase.Rows[0]["OURNO"].ToString();
                     f.ClientNo = dtCase.Rows[0]["CLIENT"].ToString();
                     f.ClientName = dtCase.Rows[0]["CLIENT_NAME"].ToString();
-
+                    f.WithDrew = dtCase.Rows[0]["WITHDREW"].ToString();
+                    if (!string.IsNullOrWhiteSpace(dtCase.Rows[0]["DIV_FILINGDATE"].ToString()))
+                        f.DivFilingDate = Convert.ToDateTime(dtCase.Rows[0]["DIV_FILINGDATE"]);
                     f.CPCOfficialFileConfig.Dealer = HandlerRedistribution(f.CaseSerial, f.CPCOfficialFileConfig.Dealer);
                     GeneratePDFFile(f);
                 }
@@ -122,7 +124,12 @@ namespace BEOfficialFileImport
             });
             if (files.Count == 0) return;
             var sGenerateFile = $@"D:\GenerateFolder\{DateTime.Now:yyyyMMddtt}\{cpcOfficialFile.CaseSerial.Substring(0, cpcOfficialFile.CaseSerial.IndexOf("-", StringComparison.Ordinal))}-{DateTime.Now:yyyyMMdd}-{(cpcOfficialFile.CPCOfficialFileConfig == null ? cpcOfficialFile.FileName : cpcOfficialFile.CPCOfficialFileConfig.Rename)}.pdf";
-
+            int i = 1;
+            while (File.Exists(sGenerateFile))
+            {
+                sGenerateFile = $@"D:\GenerateFolder\{DateTime.Now:yyyyMMddtt}\{cpcOfficialFile.CaseSerial.Substring(0, cpcOfficialFile.CaseSerial.IndexOf("-", StringComparison.Ordinal))}-{DateTime.Now:yyyyMMdd}-{(cpcOfficialFile.CPCOfficialFileConfig == null ? cpcOfficialFile.FileName : cpcOfficialFile.CPCOfficialFileConfig.Rename)}{i}.pdf";
+                i++;
+            }
             try
             {
                 var document = new Document(PageSize.A4, 25, 25, 25, 25);
@@ -196,7 +203,9 @@ namespace BEOfficialFileImport
                     f.CaseSerial = dtCase.Rows[0]["OURNO"].ToString();
                     f.ClientNo = dtCase.Rows[0]["CLIENT"].ToString();
                     f.ClientName = dtCase.Rows[0]["CLIENT_NAME"].ToString();
-
+                    f.WithDrew = dtCase.Rows[0]["WITHDREW"].ToString();
+                    if (!string.IsNullOrWhiteSpace(dtCase.Rows[0]["DIV_FILINGDATE"].ToString()))
+                        f.DivFilingDate = Convert.ToDateTime(dtCase.Rows[0]["DIV_FILINGDATE"]);
                     f.Applicants = new Hashtable();
                     for (int i = 1; i <= 5; i++)
                     {
@@ -339,6 +348,12 @@ namespace BEOfficialFileImport
                     cpcOfficialFile.SendDate.AddDays(cpcOfficialFile.CPCOfficialFileConfig.AddDays)
                         .AddMonths(cpcOfficialFile.CPCOfficialFileConfig.AddMonths)
                         .ToString("yyyy/MM/dd"));
+            else if (cpcOfficialFile.FileCode == "200103")//缴纳申请费通知书
+                listSubject.Add((cpcOfficialFile.DivFilingDate ?? cpcOfficialFile.AppDate).AddMonths(2).ToString("yyyy/MM/dd"));
+            else if (cpcOfficialFile.FileCode == "200021")//费用减缓通知书
+                listSubject.Add((cpcOfficialFile.DivFilingDate ?? cpcOfficialFile.AppDate).AddMonths(2).ToString("yyyy/MM/dd"));
+            if (!string.IsNullOrWhiteSpace(cpcOfficialFile.WithDrew))
+                listSubject.Add(cpcOfficialFile.WithDrew);
             message.Subject = string.Join("；", listSubject);
 
             var listBody = new List<string>();
@@ -399,7 +414,10 @@ namespace BEOfficialFileImport
             {"SJY", "jingyu.shen@beijingeastip.com"},
             {"ZX", "xiao.zhang@beijingeastip.com"},
             {"ZNQ", "naiqi.zhang@beijingeastip.com"},
-            {"ON", "official_notice@beijingeastip.com"}
+            {"ON", "official_notice@beijingeastip.com"},
+            {"SWJ", "wenjing.su@beijingeastip.com"},
+            {"GG", "ge.gao@beijingeastip.com"},
+            {"WR", "rui.wang@beijingeastip.com"}
         };
     }
 }

@@ -224,5 +224,9 @@ namespace BEOfficialFileImport
         public string ClientName { get; set; }
 
         public Hashtable Applicants { get; set; }
+
+        public string WithDrew { get; set; }
+
+        public DateTime? DivFilingDate { get; set; }
     }
 }
