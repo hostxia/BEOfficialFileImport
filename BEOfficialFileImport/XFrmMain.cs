@@ -56,7 +56,7 @@ namespace BEOfficialFileImport
 
         public bool ExistFile(string sOurNo, string sAppNo, string sFileName, DateTime dtSendDate, string sFileCode = "")
         {
-            return DbHelperOra.Exists($"select 1 from RECEIVINGLOG where (OURNO = '{sOurNo}' or APPNO = '{sAppNo}') and COMMENTS like '%{sFileName}%' and ISSUEDATE = to_date('{dtSendDate:yyyy/MM/dd}','yyyy/MM/dd')");
+            return DbHelperOra.Exists($"select 1 from RECEIVINGLOG where (OURNO = '{sOurNo}' or APPNO = '{sAppNo}') and COMMENTS = '{sFileName}' and ISSUEDATE = to_date('{dtSendDate:yyyy/MM/dd}','yyyy/MM/dd')");
         }
 
         public void LoadCPCFiles()
@@ -98,6 +98,17 @@ namespace BEOfficialFileImport
                     f.WithDrew = dtCase.Rows[0]["WITHDREW"].ToString();
                     if (!string.IsNullOrWhiteSpace(dtCase.Rows[0]["DIV_FILINGDATE"].ToString()))
                         f.DivFilingDate = Convert.ToDateTime(dtCase.Rows[0]["DIV_FILINGDATE"]);
+                    if (f.FileCode == "210304" || f.FileCode == "250304")
+                    {
+                        if (dtCase.Rows[0]["APPL_CODE1"].ToString() == "3667" ||
+                            dtCase.Rows[0]["APPL_CODE2"].ToString() == "3667" ||
+                            dtCase.Rows[0]["APPL_CODE3"].ToString() == "3667" ||
+                            dtCase.Rows[0]["APPL_CODE4"].ToString() == "3667" ||
+                            dtCase.Rows[0]["APPL_CODE5"].ToString() == "3667")
+                        {
+                            f.CPCOfficialFileConfig.Dealer = "DXD";
+                        }
+                    }
                     f.CPCOfficialFileConfig.Dealer = HandlerRedistribution(f.CaseSerial, f.CPCOfficialFileConfig.Dealer);
                     GeneratePDFFile(f);
                 }
@@ -219,8 +230,32 @@ namespace BEOfficialFileImport
                     }
                     var strSql = new List<string>();
                     if (!string.IsNullOrWhiteSpace(f.AppNo))
-                        strSql.Add($"update PATENTCASE set APPLICATION_NO = '{f.AppNo}' where OURNO = '{f.CaseSerial}'");
+                    {
+                        if (!string.IsNullOrWhiteSpace(dtCase.Rows[0]["APPLICATION_NO"].ToString()) &&
+                            dtCase.Rows[0]["APPLICATION_NO"].ToString() != f.AppNo)
+                        {
+                            var dialogResult = XtraMessageBox.Show(
+                                   $"通知书申请号与PatentCase系统中的申请号不一致，请确认是否进行更新，\r\n系统内申请号：{dtCase.Rows[0]["APPLICATION_NO"].ToString()}\r\n通知书申请号：{f.AppNo}", "冲突提醒", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
+                            if (dialogResult == DialogResult.Cancel)
+                            {
+                                f.Note += "存在冲突，已跳过";
+                                return;
+                            }
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                strSql.Add($"update PATENTCASE set APPLICATION_NO = '{f.AppNo}' where OURNO = '{f.CaseSerial}'");
+                            }
+                        }
+                        else
+                        {
+                            strSql.Add($"update PATENTCASE set APPLICATION_NO = '{f.AppNo}' where OURNO = '{f.CaseSerial}'");
+                        }
+                    }
+                    if (f.FileCode == "210307" || f.FileCode == "210308")
+                    {
+                        strSql.Add($"update PATENTCASE set SE_INITIATED = 'Y', SE_DATE = to_date('{f.SendDate:yyyy/MM/dd HH:mm:ss}','yyyy/MM/dd hh24:mi:ss') where OURNO = '{f.CaseSerial}'");
+                    }
                     strSql.Add($"insert into RECEIVINGLOG (PID,ISSUEDATE,RECEIVED,SENDERID,SENDER,OURNO,APPNO,CLIENTNO,CONTENT,COPIES,COMMENTS,STATUS,HANDLER) values ('{DateTime.Now:yyyyMMdd_HHmmss_ffffff_0}',to_date('{f.SendDate.Date:yyyy/MM/dd}','yyyy/MM/dd'),to_date('{DateTime.Now.Date:yyyy/MM/dd}','yyyy/MM/dd'),'SIPO','SIPO','{dtCase.Rows[0][0]}','{dtCase.Rows[0][1]}','{dtCase.Rows[0][2]}','other','1','{f.FileName}','P','{f.CPCOfficialFileConfig?.Dealer}')");
 
                     if (f.CPCOfficialFileConfig?.DeadlineFiledType != null)
@@ -301,14 +336,15 @@ namespace BEOfficialFileImport
             }
             else if (sDefaultHandler == "XN")
             {
-                if ("134".Contains(listOurNum[0]))
-                    return "XN";
-                if ("267".Contains(listOurNum[0]))
-                    return "SJY";
-                if ("059".Contains(listOurNum[0]))
-                    return "ZX";
-                if ("8".Contains(listOurNum[0]))
-                    return "ZNQ";
+                foreach (var sNum in listOurNum)
+                {
+                    if ("134".Contains(sNum))
+                        return "XN";
+                    if ("267".Contains(sNum))
+                        return "SJY";
+                    if ("059".Contains(sNum))
+                        return "ZX";
+                }
             }
             else if (sDefaultHandler == "GS")
             {
